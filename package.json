@@ -2,5 +2,9 @@
   "workspaces": ["frontend", "backend"],
   "scripts": {
     "start": "bun --filter '*' dev"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.0",
+    "tailwindcss": "^4.2.0"
   }
 }
