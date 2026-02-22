@@ -1,20 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from "react";
+import { socket } from "./components/socket";
 
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [text, setText] = useState("");
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+  }, []);
+  const send = () => {
+    socket.emit("texts", text);
+    setText("");
+  };
 
   return (
     <>
-    <h1 className='text-center font-bold text-3xl'>Texty</h1>
-      
-        <button  className="border-1 p-2 items-center" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        
+      <section className="w-full flex flex-col h-screen bg-[#eee]">
+        <div className="flex-1 text-center align-middle">messages</div>
+        <div className="bg-white h-20 ">
+          <div className="max-w-300 flex justify-center items-center">
+            <input
+              className="border-red-500 border-2"
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
+            />
+            <button onClick={send}>Send</button>
+          </div>
+        </div>
+      </section>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
