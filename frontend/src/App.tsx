@@ -3,6 +3,7 @@ import { socket } from "./components/socket";
 import Modal from "./components/modal";
 import Login from "./components/login";
 import axios from "axios";
+import Register from "./components/register";
 
 const App: React.FC = () => {
   interface message {
@@ -43,11 +44,21 @@ const App: React.FC = () => {
     setText("");
   };
 
+  const [page, setpage] = useState<"register"| "login">("register")
+
   return (
     <>
       {showModal ? (
         <Modal>
-          <Login name={name} setName={setName} setShowModal={setShowModal} />
+          {page =="register"&&(
+      <Register goToLogin={()=>setpage("login")}/>
+         ) }
+         {page ==="login" && <Login name={name} setName={setName} setShowModal={setShowModal} />}
+
+
+
+
+          {/* <Login name={name} setName={setName} setShowModal={setShowModal} /> */}
         </Modal>
       ) : null}
       <section className="flex flex-col h-dvh bg-[#eee]">
