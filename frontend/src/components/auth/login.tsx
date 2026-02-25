@@ -1,10 +1,10 @@
 import type React from "react";
 import axios from "axios";
-import { URL, socket } from "./socket";
+import { URL, socket } from "../socket";
 
 interface LoginProps {
   name: string;
-  setName: (arg0: string) => void;
+  setName: (arg: string) => void;
   setShowModal: (arg: boolean) => void;
 }
 const Login: React.FC<LoginProps> = ({ name, setName, setShowModal }) => {

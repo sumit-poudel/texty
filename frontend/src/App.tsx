@@ -1,59 +1,80 @@
 import React, { useEffect, useState } from "react";
 import { socket } from "./components/socket";
 import Modal from "./components/modal";
-import Login from "./components/login";
+import Login from "./components/auth/login";
 import axios from "axios";
-import Register from "./components/register";
+import Register from "./components/auth/register";
 
 const App: React.FC = () => {
   interface message {
     texts: string;
     sender: string;
   }
+  type page = "register" | "login";
+  type modal = boolean | null;
 
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<message[]>([]);
   const [name, setName] = useState<string>("");
-  const [showModal, setShowModal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<modal>(null);
+  const [page, setpage] = useState<page>("register");
 
   useEffect(() => {
-    const login = async () => {
-      await axios
-        .get("http://localhost:8080/auth/me", { withCredentials: true })
-        .then((res) => {
-          if (res.data.name) {
-            setName(res.data.name);
-            setShowModal(false);
-          }
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/auth/me", {
+          withCredentials: true,
         });
+        if (res.data.name) {
+          setName(res.data.name);
+          setShowModal(false);
+        } else {
+          setShowModal(true);
+        }
+      } catch (error) {
+        // User not authenticated, show modal
+        alert(error);
+        setShowModal(true);
+      }
     };
-    login();
+
+    checkAuth();
+
     socket.on("messages", (data: message[]): void => {
       setMessages(data);
       console.log(data);
     });
+
     return () => {
       socket.off("connect");
       socket.off("messages");
     };
   }, []);
+
   const send = (): void => {
     const trimmed = text.trim();
     if (trimmed === "") return;
     socket.emit("texts", trimmed, name);
     setText("");
   };
-const [page, setpage] = useState<"register"| "login">("register")
+
+  // Show nothing while checking authentication
+  if (showModal === null) {
+    return null;
+  }
 
   return (
     <>
       {showModal ? (
         <Modal>
-            {page =="register"  && (
-      <Register goToLogin={()=>setpage("login")}/>
-         ) }
-         {page ==="login" && <Login name={name} setName={setName} setShowModal={setShowModal} />}
-          {/* <Login name={name} setName={setName} setShowModal={setShowModal} /> */}
+          {page === "register" ? (
+            <Register
+              setShowModal={setShowModal}
+              goToLogin={() => setpage("login")}
+            />
+          ) : (
+            <Login name={name} setName={setName} setShowModal={setShowModal} />
+          )}
         </Modal>
       ) : null}
       <section className="flex flex-col h-dvh bg-[#eee]">
