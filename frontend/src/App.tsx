@@ -4,20 +4,23 @@ import Modal from "./components/modal";
 import Login from "./components/auth/login";
 import axios from "axios";
 import Register from "./components/auth/register";
+import Front from "./components/auth/front";
 
 const App: React.FC = () => {
   interface message {
     texts: string;
     sender: string;
   }
-  type page = "register" | "login";
+  type page = "front" | "register" | "login";
   type modal = boolean | null;
 
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<message[]>([]);
   const [name, setName] = useState<string>("");
   const [showModal, setShowModal] = useState<modal>(null);
-  const [page, setpage] = useState<page>("register");
+  const [page, setpage] = useState<page>("front");
+
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -67,8 +70,8 @@ const App: React.FC = () => {
     <>
       {showModal ? (
         <Modal>
-          {page === "register" ? (
-            <Register
+          {page === "front" ? (
+            <Front
               setShowModal={setShowModal}
               goToLogin={() => setpage("login")}
             />
