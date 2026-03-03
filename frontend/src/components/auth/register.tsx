@@ -3,10 +3,10 @@ import { useState } from "react";
 import User from "./zod";
 
 type Props = {
-  goToLogin: () => void;
+  // goToLogin: () => void;
   setShowModal: (arg: boolean) => void;
 };
-const Register = ({ goToLogin, setShowModal }: Props) => {
+const Register = ({  setShowModal }: Props) => {
   const [name, setname] = useState<string>("");
   const [email, setemail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
@@ -67,9 +67,9 @@ const Register = ({ goToLogin, setShowModal }: Props) => {
           >
             Submit
           </button>
-          <button className="mx-auto" onClick={goToLogin}>
+          {/* <button className="mx-auto" onClick={goToLogin}>
             continue as guest
-          </button>
+          </button> */}
         </form>
       </div>
     </>
