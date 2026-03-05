@@ -1,6 +1,8 @@
 import type React from "react";
 import { useState } from "react";
 import User from "./zod";
+import girl1 from "../../assets/girl1.png"
+import card from "../../assets/poster.png"
 
 interface RegisterProps {
   name: string;
@@ -23,7 +25,6 @@ const Register = ({ name, setName, setShowModal }: RegisterProps) => {
     });
 
     if (!result.success) {
-      // Extract all error messages and display them
       const errorMessages = result.error.message;
       seterror(errorMessages);
       return;
@@ -32,43 +33,78 @@ const Register = ({ name, setName, setShowModal }: RegisterProps) => {
   };
   return (
     <>
-      <div className="bg-white text-blaack shadow-lg p-4 rounded-lg">
-        <form className="flex text-black justify-center gap-2 items-center rounded-lg flex-col">
-          <h2 className="  border-b mb-5 ">Register to continue</h2>
-          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-          <label htmlFor="name">
-            Name:{" "}
-            <input
-              type="name"
-              placeholder="   Enter username"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
+     <div
+        className="w-[80vw]
+      blacky
+         sm:w-[69vw] 
+          md:w-[62vw]
+          p-4
+        lg:w-[52vw]
+        h-fit
+    shadow-md flex "
+      >
 
-          <label htmlFor="">
-            {" "}
-            Mail id :{" "}
-            <input
-              type="email"
-              placeholder="   Enter your email"
-              onChange={(e) => setemail(e.target.value)}
+    <div className=" md:block md:w-1/2">
+    <img 
+      src={card}
+      className="w-full h-full object-cover"
+      alt=""
+    />
+  </div>
+
+      <div className="bg-[#ffffff] md:w-1/2 w-full p-8 text-black shadow-md flex flex-col justify-center">
+        <form className="flex    gap-5   flex-col">
+          <h2 className="  text-3xl font-semibold text-center mb-4 ">Register</h2>
+         
+           
+
+          <input
+            type="name"
+            placeholder="Full Name"
+            onChange={(e) => setName(e.target.value)}
+            className="reg"
             />
-          </label>
-          <label className="mb-4" htmlFor="">
-            Password :{" "}
-            <input
-              type="password"
-              placeholder="   Enter password"
-              onChange={(e) => setpassword(e.target.value)}
+
+
+          <input
+            type="email"
+            placeholder="Email or Phone"
+            onChange={(e) => setemail(e.target.value)}
+            className="reg"
             />
-          </label>
+
+
+              <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) =>  setpassword(e.target.value)}
+            className="reg"
+            />
+
+
+              <input
+            type="password"
+            placeholder="Confirm Password"
+            onChange={(e) =>  setpassword(e.target.value)}
+            className="reg"
+            />
+
+            {error && (<p className="text-red-500 text-sm mb-3">{error}</p>)}
+           
+
+         
+          
+         
           <button
             onClick={handleSubmit}
-            className="bg-blue-500 px-4 cursor-pointer py-1 text-white"
+            className="blacky  py-2 cursor-pointer rounded-3xl hover:blacky transition text-white"
           >
             Submit
           </button>
         </form>
+      </div>
+
+             
       </div>
     </>
   );
