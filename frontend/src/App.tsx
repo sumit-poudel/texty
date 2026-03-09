@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { socket } from "./components/socket";
+import { socket } from "./components/store/socket";
+import {
+  messages,
+  messageStore,
+  printedMessage,
+} from "./components/store/atoms";
 import Modal from "./components/modal";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
@@ -7,18 +12,14 @@ import axios from "axios";
 import Front from "./components/front";
 import Sidebar from "./components/sidebar";
 import { SidebarOpen, SidebarClose } from "lucide-react";
+import { useAtom, useAtomValue } from "jotai";
 
 const App: React.FC = () => {
-  interface Message {
-    texts: string;
-    sender: string;
-  }
-
   type Page = "front" | "register" | "login";
   type ModalState = boolean | null;
 
-  const [text, setText] = useState<string>("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const texts = useAtomValue(messages, { store: messageStore });
+  const [text, setText] = useAtom(printedMessage);
   const [name, setName] = useState<string>("");
   const [showModal, setShowModal] = useState<ModalState>(null);
   const [page, setPage] = useState<Page>("front");
@@ -57,12 +58,6 @@ const App: React.FC = () => {
     };
 
     checkAuth();
-
-    socket.on("messages", (data: Message[]) => setMessages(data));
-
-    return () => {
-      socket.off("messages");
-    };
   }, []);
 
   const send = (): void => {
@@ -96,12 +91,12 @@ const App: React.FC = () => {
         </button>
 
         <section className="flex flex-1 flex-col relative">
-          <div className="flex-1 max-w-5xl mx-auto p-4 flex flex-col w-full overflow-y-scroll no-scrollbar gap-2">
-            {messages.map((msg, index) => (
+          <div className="max-w-5xl flex-1 max-w-5xl mx-auto p-4 flex flex-col w-full overflow-y-scroll no-scrollbar gap-2 ">
+            {...texts.map((msg, index) => (
               <div key={index}>
-                <span className="text-xs text-gray-500">{msg.sender}</span>
+                <span className="text-xs text-gray-500">{msg.user}</span>
                 <div className="rounded-2xl text-white blacky w-fit px-4 py-1">
-                  {msg.texts}
+                  {msg.message}
                 </div>
               </div>
             ))}

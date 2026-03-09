@@ -1,6 +1,6 @@
 import type React from "react";
 import axios from "axios";
-import { URL, socket } from "../socket";
+import { URL, socket } from "../store/socket";
 
 interface LoginProps {
   name: string;

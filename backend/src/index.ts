@@ -17,7 +17,7 @@ const port = 8080;
 const app = express();
 const httpServer = createServer(app);
 const secret = process.env.SECRET || "sumitpdl";
-const message: messages[] = [];
+const messages: messages[] = [];
 
 const corsOptions: CorsOptions = {
   origin: "http://localhost:5173",
@@ -30,8 +30,8 @@ const io = new Server(httpServer, {
 });
 
 interface messages {
-  texts: string;
-  sender: string;
+  message: string;
+  user: string;
 }
 
 app.use(express.json());
@@ -68,13 +68,13 @@ app.get("/auth/me", (req, res) => {
 });
 
 io.on("connection", (socket): void => {
-  socket.on("texts", (texts: string, sender: string): void => {
-    if (typeof texts !== "string" || typeof sender !== "string") return;
-    message.push({ texts, sender });
-    io.emit("messages", message);
+  socket.on("texts", (message: string, user: string): void => {
+    if (typeof message !== "string" || typeof user !== "string") return;
+    messages.push({ message, user });
+    io.emit("messages", messages.slice(-10));
   });
 
-  socket.emit("messages", message);
+  socket.emit("messages", messages);
 });
 
 httpServer.listen(port, "0.0.0.0", (): void => {
