@@ -1,8 +1,8 @@
 import type React from "react";
 import { useState } from "react";
 import User from "./zod";
-import girl1 from "../../assets/girl1.png"
-import card from "../../assets/poster.png"
+
+import card from "../../../../assets/poster.png"
 
 interface RegisterProps {
   name: string;
@@ -12,6 +12,7 @@ interface RegisterProps {
 const Register = ({ name, setName, setShowModal }: RegisterProps) => {
   const [email, setemail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, seterror] = useState<string>("");
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,10 +23,11 @@ const Register = ({ name, setName, setShowModal }: RegisterProps) => {
       name: name,
       email: email,
       password: password,
+      confirmPassword:confirmPassword,
     });
 
     if (!result.success) {
-      const errorMessages = result.error.message;
+      const errorMessages = result.error.issues[0].message;
       seterror(errorMessages);
       return;
     }
@@ -59,7 +61,7 @@ const Register = ({ name, setName, setShowModal }: RegisterProps) => {
            
 
           <input
-            type="name"
+            type="text"
             placeholder="Full Name"
             onChange={(e) => setName(e.target.value)}
             className="reg"
@@ -85,7 +87,7 @@ const Register = ({ name, setName, setShowModal }: RegisterProps) => {
               <input
             type="password"
             placeholder="Confirm Password"
-            onChange={(e) =>  setpassword(e.target.value)}
+            onChange={(e) =>  setConfirmPassword(e.target.value)}
             className="reg"
             />
 

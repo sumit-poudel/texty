@@ -1,5 +1,5 @@
-import girl from "../assets/girl2.png"
-import  v1 from "../assets/v1.png"
+import girl from "../../../assets/girl2.png"
+import  chat from "../../../assets/v1.png"
 
 
 type Props = {
@@ -72,7 +72,7 @@ type Props = {
      <div className="flex-1 flex justify-center  mt-5 lg:mt-0">
       <div className="relative">
     <img
-      src={v1}
+      src={chat}
       alt="Chat UI"
       className="w-500px  lg:w-620px drop-shadow-2xl -translate-y-6"
     />
